@@ -2,9 +2,11 @@
 const cors = require('cors')
 const express = require('express');
 const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
+
 require('dotenv').config();
 
-
+// var {ObjectId } = require('mongodb');
 const app = express();
 
 // const mongoose = require('mongoose');
@@ -23,10 +25,47 @@ app.use(express.urlencoded({extended: true}));
 
 const uri = `mongodb+srv://nodemongo:${process.env.DB_PASS}@cluster0.vewnd.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
-// connect with mongoDB via mongoose
-mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 
 
+// mongo client initialization
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+client.connect( err => {
+    if(err) throw err;
+    const productCollection = client.db("bandoDB").collection("products");
+
+    // /product POST
+
+    app.post('/add-product', (req, res) => {
+        const productData = req.body;
+        productCollection.insertOne(productData)
+        .then((result) => {
+            res.send(result.insertedId);
+        })
+        .catch(err => res.status(500).json({error: err}))
+    })
+
+  
+    // /product GET
+    app.get('/products', (req, res) => {
+        productCollection.find({})
+        .toArray((err, doc) => {
+            res.send(doc);
+           
+        })
+    })
+
+})
+
+
+// error handler
+
+function errorHandler(err, req, res, next){
+    if(res.headerSent){
+        return next(err)
+    }
+    res.status(500).json({error: err});
+}
 
 
 
