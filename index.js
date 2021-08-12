@@ -1,7 +1,14 @@
+
+const cors = require('cors')
 const express = require('express');
-const app = express();
-const cors = require('cors');
 const mongoose = require('mongoose');
+require('dotenv').config();
+
+
+const app = express();
+
+// const mongoose = require('mongoose');
+
 
 // initialize port number
 const port = process.env.PORT || 8000;
@@ -14,10 +21,10 @@ app.use(express.urlencoded({extended: true}));
 
 // mongo db url 
 
-const url = '';
+const uri = `mongodb+srv://nodemongo:${process.env.DB_PASS}@cluster0.vewnd.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 // connect with mongoDB via mongoose
-mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 
@@ -30,5 +37,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
