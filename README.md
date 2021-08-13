@@ -4,17 +4,16 @@ Task:
 
 1. create initial project setup
 2. install dependencies
+3. setup mongoose with mongodb
+4. create /category api
 
 Done:
 
-1.  create initial project setup
-2.
+1. create initial project setup
+2. install dependencies
+3. setup mongoose with mongodb
+4. create /category api
 
+## api description
 
-users collection properties:
-
-name,
-email,
-password,
-photoUrl
-phone
+`/category GET /category post properties: { name, shortDesc } `
