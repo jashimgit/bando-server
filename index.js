@@ -34,8 +34,9 @@ app.use('/auth', userRoutes);
 // category route
 app.use('/category', categoryRoutes)
 
-// error handler
 
+
+// error handler
 function errorHandler(err, req, res, next){
     if(res.headerSent){
         return next(err)
