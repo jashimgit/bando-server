@@ -3,7 +3,9 @@ const router = require('express').Router()
 const Category = require("../model/categoryModel");
 
 // Get all Category route
-// router.get("/", async (req, res) => {});
+router.get("/", async (req, res) => {
+  
+});
 
 // Add new category
 router.post("/", async (req, res) => {
