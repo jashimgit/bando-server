@@ -12,12 +12,26 @@ router.get("/", async (req, res) => {
         error: "There was an error",
       });
     } else {
-      res.status(500).json({
+      res.status(200).json({
         categoris: docs,
       });
     }
   });
 });
+
+// get single category
+
+router.get('/:id', async (req, res) => {
+  await Category.find({_id: req.params.id}, (err, docs) => {
+    if(err){
+      res.status(500).json({error: 'There was an error'})
+    } else {
+      res.status(200).json({
+        docs
+      })
+    }
+  })
+})
 
 // Add new category
 router.post("/", async (req, res) => {
@@ -39,7 +53,7 @@ router.put("/:id", async (req, res) => {
     if(err){
       res.status(500).json({error: 'server side error'})
     } else{
-      res.status(200).json({message: 'category added successfully'})
+      res.status(200).json({message: 'category updated successfully'})
     }
   })
 });
