@@ -6,8 +6,9 @@ const userSchema = new mongoose.Schema({
   password: String,
   photoUrl: String,
   phone: String,
-  rule: { type: String, required: true },
+  role: { type: String, required: true },
   createdAt: Date,
+  status: String,
 });
 
 export default userSchema;
