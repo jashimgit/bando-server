@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema({
     name: String,
-    shortDesc: String
+    shortDesc: String,
 })
 
-module.exports = categorySchema;
+export default categorySchema;
