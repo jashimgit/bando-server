@@ -8,7 +8,7 @@ import verifyUserToken from "../middlewares/verifyUserToken";
 
 const router = express.Router();
 
-router.get("/", getAllProduct);
+router.get("/all", getAllProduct);
 router.post("/", verifyUserToken, productValidation, postSingleProduct);
 // router.put('/:id', updateSingleProduct);
 // router.delete('/:id', deleteSingleProduct);
