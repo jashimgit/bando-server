@@ -26,3 +26,19 @@ export const validateRegister = (req, res, next) => {
 }
 
 
+export const validateLogin = (req, res, next) => {
+    const data = req.body;
+
+    const schema = Joi.object({
+        email: Joi.string().required().email(),
+        password: Joi.string().required()
+    });
+
+    const { error } = schema.validate(data);
+
+    if(error) {
+        const message = error.details[0].message;
+        return res.status(400).send({message: message, name: "Sorry Email or password not valid"});
+    }
+    next();
+}
