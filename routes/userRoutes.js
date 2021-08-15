@@ -2,13 +2,12 @@
 import express from "express";
 import {
   handleUserLogin,
-  handleUserSignup,
+  handleUserSignup
 } from "../controllers/userController";
-import { validateRegister } from "../middlewares/validationHelpers/userValidation";
+import { validateLogin, validateRegister } from '../middlewares/validationHelpers/userValidation';
 
-import express from 'express';
-import { handleUserLogin, handleUserSignup } from "../controllers/userController";
-import { validateRegister, validateLogin } from '../middlewares/validationHelpers/userValidation';
+
+
 
 
 
