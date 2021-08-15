@@ -21,11 +21,7 @@ export const handleUserLogin = async (req, res) => {
 
 export const handleUserSignup = async (req, res) => {
   const body = req.body;
- 
-  if (!(body.email && body.password)) {
-    return res.status(400).send({ error: "Data not formated properly" });
-  }
-
+  
   // createing a new mongoose doc for user data
   const user = new models.User(body);
   try {
