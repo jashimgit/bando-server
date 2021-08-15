@@ -9,16 +9,18 @@ export const validateRegister = (req, res, next) => {
         email: Joi.string().email().required(),
         password: Joi.string().min(6),
         photoUrl: Joi.string(),
-        phone: Joi.string(),
-        role: Joi.string(),
+        phone: Joi.string().required(),
+        role: Joi.string().required(),
         status: Joi.string()
     });
+
+   
 
     const {error} = schema.validate(data);
     
     if(error) {
         const message = error.details[0].message;
-        return res.status(400).send({message: message, name: "Not found"});
+        return res.status(400).send({message: message, name: "Bad Request"});
     }
     next();
 }
