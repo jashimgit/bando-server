@@ -23,6 +23,9 @@ app.use("/auth", routes.userRoutes);
 // category route
 app.use("/category", routes.categoryRoutes);
 
+// product route 
+app.use('/product', routes.productRoutes)
+
 // root route handler
 app.get("/", (req, res) => {
   res.send("Welcome to Bando server");
