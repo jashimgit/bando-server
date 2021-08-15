@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const productSchema = mongoose.Schema({
   name: { type: String, required: true },
-  category: [{ type: String, lowercase: true, required: true }],
+  category: [String],
   subCategory: String,
   brand: String,
   model: String,
-  images: [{ type: String, lowercase: true, required: true }],
+  images: [String],
   price: { type: Number, required: true },
   color: String,
   size: String,
