@@ -1,8 +1,8 @@
 import cors from "cors";
-import express from "express";
 import dotenv from "dotenv";
-import routes from "./routes";
+import express from "express";
 import connectWithDB from "./mongoManager";
+import routes from "./routes";
 dotenv.config();
 
 const app = express();

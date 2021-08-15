@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import models from "../models";
 
+
+
 export const handleUserLogin = async (req, res) => {
   const body = req.body;
   const user = await models.User.findOne({ email: body.email });
@@ -19,7 +21,7 @@ export const handleUserLogin = async (req, res) => {
 
 export const handleUserSignup = async (req, res) => {
   const body = req.body;
-
+ 
   if (!(body.email && body.password)) {
     return res.status(400).send({ error: "Data not formated properly" });
   }
