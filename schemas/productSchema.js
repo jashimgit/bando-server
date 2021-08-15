@@ -1,10 +1,8 @@
-import mongoose, { Schema } from "mongoose";
-
-
+import mongoose from "mongoose";
 
 const productSchema = mongoose.Schema({
   name: { type: String, required: true },
-  userId: {type: Schema.Types.ObjectId, required: true, ref: 'User'},
+  seller: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
   category: {
     type: [String],
     required: true,

@@ -7,14 +7,25 @@ const { Product } = models;
 //get all product
 export const getAllProduct = async (req, res) => {
   try {
-    Product.find()
-      .populate("user")
-      .exec((err, products) => {
-        if (!err) return res.status(200).send({ products });
-        return res.send(err);
+    const products = await Product.find().populate(
+      "seller",
+      "name email photoUrl createdAt phone -_id"
+    );
+    if (!products.length) {
+      return res.status(404).send({
+        name: "Not Fount",
+        message: "there is not product in this collection",
       });
+    }
+    res.status(200).send({
+      name: "OK",
+      products,
+      message: "Total product : " + products.length,
+    });
   } catch (error) {
-    res.status(404).send({ name: "Not Found", message: error.message });
+    return res
+      .status(500)
+      .send({ name: "Internal Server Error", message: error.message });
   }
 };
 
@@ -27,7 +38,7 @@ export const postSingleProduct = async (req, res) => {
       .send({ name: "Forbidden", message: "only seller can add product" });
   }
 
-  const product = { ...req.body, userId: req.user._id };
+  const product = { ...req.body, seller: req.user._id };
   const data = new Product(product);
   try {
     const result = await data.save();
