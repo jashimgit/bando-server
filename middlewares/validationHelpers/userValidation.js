@@ -11,7 +11,7 @@ export const validateRegister = (req, res, next) => {
     phone: Joi.string().required(),
     role: Joi.string().required(),
     status: Joi.string(),
-    licence: Joi.string(),
+    license: Joi.string(),
   });
 
   const { error } = schema.validate(data);

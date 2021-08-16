@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   role: { type: String, required: true, enum: ["user", "seller"] },
   createdAt: { type: Date, default: new Date() },
   status: { type: String, default: null },
-  licence: { type: String, default: null },
+  license: { type: String, default: null },
 });
 
 
