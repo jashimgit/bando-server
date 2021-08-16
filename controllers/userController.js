@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { sendResponse } from "../helpersFunctions";
 import models from "../models";
 
 const { User } = models;
@@ -69,7 +70,7 @@ export const handleUserSignup = async (req, res) => {
   //check this email is already have an account or not
   const userExist = await User.findOne({ email: body.email });
   if (userExist) {
-    return res.status(400).send({
+    return sendResponse(res, 400, {
       name: "Bad Request",
       success: false,
       message: "user already exist is this email: " + body.email,
@@ -84,13 +85,16 @@ export const handleUserSignup = async (req, res) => {
     // now we set user password to hashed password
     user.password = await bcrypt.hash(user.password, salt);
     const savedUser = await user.save();
-    res.status(201).send({
+    return sendResponse(res, 201, {
       name: "OK",
       success: true,
       message: "user created id: " + savedUser._id,
     });
   } catch (err) {
-    res.status(501);
-    console.log(err);
+    return sendResponse(res, 501, {
+      name: "Internal Server Error",
+      success: false,
+      message: err.message,
+    });
   }
 };
