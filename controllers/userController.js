@@ -8,7 +8,9 @@ const { User } = models;
 export const handleUserLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email: email }).exec();
+    const user = await User.findOne({ email: email })
+      .select("-password")
+      .exec();
     if (!user)
       return res
         .status(404)
@@ -24,15 +26,19 @@ export const handleUserLogin = async (req, res) => {
     // res.append("token", token);
     res
       .status(200)
-      .json({ message: "login success", name: "OK", success: true, token: token, role: user.role, status: user.status });
-  } catch (error) {
-    return res
-      .status(500)
-      .send({
-        name: "Internal Sever Error",
-        message: error.message,
-        success: false,
+      .json({
+        message: "login success",
+        name: "OK",
+        success: true,
+        token: token,
+        user,
       });
+  } catch (error) {
+    return res.status(500).send({
+      name: "Internal Sever Error",
+      message: error.message,
+      success: false,
+    });
   }
 };
 
