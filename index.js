@@ -21,8 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // user login/ registration routes
 app.use("/auth", routes.userRoutes);
 
-// general user related routes
-app.use("/user", routes.userRoutes);
+
 
 // category route
 app.use("/category", routes.categoryRoutes);

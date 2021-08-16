@@ -120,43 +120,32 @@ export const getAllUsers = async (req, res) => {
 // get user by id
 
 export const getUserById = async (req, res) => {
-  const id = req.params.id;
-
-  const singleUser = await User.find({ _id: id }).select("-password").exec();
-    try {
-      if (singleUser) {
-        res.status(200).send({ success: true, user: singleUser });
-      }
-    } catch (error) {
-      res.status(500).json(error);
-    }
-/*
+  const id = req.params.id
+  const user = await User.findById({_id: id}).exec()
   try {
-    User.findById({ _id: id }, (err, doc) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.status(200).send(doc);
-      }
-    });
+    if (users) {
+      res.status(200).send({ success: true, users: users });
+    }
   } catch (error) {
-    console.log("error catch block", error);
+    res.status(500).json({
+      error: error
+    });
   }
-*/
- 
-};
+  }
+
 
 // Get all user where role
 export const findByUserRole = async (req, res) => {
   const role = req.params.role;
     await User.find({ role: role }, (err, data) => {
         if (err) {
-          res.status(500).json({
-            error: "some eror",
-          });
+          // res.status(500).json({
+          //   error: "user not found",
+          // });
+          console.log("err", err)
         } else {
           res.status(200).json({
-            results: data,
+            user: data,
             success: true
           });
         }

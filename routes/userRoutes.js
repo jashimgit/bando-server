@@ -24,7 +24,7 @@ router.post("/login", validateLogin, handleUserLogin);
  *  /user GET
  *  @return array
  */
-router.get("/",  getAllUsers)
+router.get("/users",  getAllUsers)
 
 /** 
  * Get user by role  
@@ -32,14 +32,14 @@ router.get("/",  getAllUsers)
  * @return object
  * 
 */
-router.get("/:role", findByUserRole)
+router.get("/user/:role", findByUserRole)
 
 /**
  *  Get user by id
- *  /:id GET
+ *  /user/:id GET
  *  @return array
  */
-router.get("/:id", getUserById);
+router.get("/user/:id", getUserById);
 
 
 
