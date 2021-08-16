@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import models from "../models";
 import jwt from "jsonwebtoken";
+import models from "../models";
 
 const { User } = models;
 
@@ -24,7 +24,7 @@ export const handleUserLogin = async (req, res) => {
     // res.append("token", token);
     res
       .status(200)
-      .json({ message: "login success", name: "OK", success: true, token: token });
+      .json({ message: "login success", name: "OK", success: true, token: token, role: user.role, status: user.status });
   } catch (error) {
     return res
       .status(500)
