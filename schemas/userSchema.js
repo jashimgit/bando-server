@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   photoUrl: { type: String, default: null },
   phone: { type: String, required: true },
   role: { type: String, required: true, enum: ["user", "seller"] },
+  // role: { type: String, required: true},
   createdAt: { type: Date, default: new Date() },
   status: { type: String, default: null },
 });
