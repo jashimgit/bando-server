@@ -8,13 +8,14 @@ const { User } = models;
 export const handleUserLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email: email })
-      .select("-password")
-      .exec();
-    if (!user)
+    const user = await User.findOne({ email: email }).select("-__v");
+
+    if (!user) {
       return res
         .status(404)
         .send({ name: "Not Found", message: "User Not found", success: false });
+    }
+
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword)
       return res.status(400).json({ error: "Invalid password" });
@@ -23,16 +24,35 @@ export const handleUserLogin = async (req, res) => {
       { _id: user._id, role: user.role, status: user.status },
       process.env.USER_SECRET
     );
+
+    const {
+      name,
+      photoUrl,
+      role,
+      phone,
+      email: newEmail,
+      _id,
+      createdAt,
+      status,
+    } = user;
+    const newUser = {
+      name,
+      photoUrl,
+      role,
+      phone,
+      email: newEmail,
+      _id,
+      createdAt,
+      status,
+    };
     // res.append("token", token);
-    res
-      .status(200)
-      .json({
-        message: "login success",
-        name: "OK",
-        success: true,
-        token: token,
-        user,
-      });
+    res.status(200).json({
+      message: "login success",
+      name: "OK",
+      success: true,
+      token: token,
+      user: newUser,
+    });
   } catch (error) {
     return res.status(500).send({
       name: "Internal Sever Error",
