@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { sendResponse } from "../helpersFunctions";
 import models from "../models";
 
 const { User } = models;
@@ -18,7 +19,11 @@ export const handleUserLogin = async (req, res) => {
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword)
-      return res.status(400).json({ error: "Invalid password" });
+      return sendResponse(res, 403, {
+        name: "Forbidden",
+        message: "Wrong password",
+        success: false,
+      });
 
     const token = jwt.sign(
       { _id: user._id, role: user.role, status: user.status },
