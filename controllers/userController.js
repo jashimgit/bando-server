@@ -21,10 +21,10 @@ export const handleUserLogin = async (req, res) => {
       { _id: user._id, role: user.role, status: user.status },
       process.env.USER_SECRET
     );
-    res.append("token", token);
+    // res.append("token", token);
     res
       .status(200)
-      .send({ message: "login success", name: "OK", success: true });
+      .json({ message: "login success", name: "OK", success: true, token: token });
   } catch (error) {
     return res
       .status(500)
