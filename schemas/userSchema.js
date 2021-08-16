@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   // role: { type: String, required: true},
   createdAt: { type: Date, default: new Date() },
   status: { type: String, default: null },
+  license: { type: String, default: null },
 });
 
 
