@@ -77,7 +77,7 @@ export const handleUserSignup = async (req, res) => {
     });
   }
 
-  // createing a new mongoose doc for user data
+  // creating a new mongoose doc for user data
   const user = new User(body);
   try {
     // generate salt to hash password

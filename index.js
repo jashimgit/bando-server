@@ -23,8 +23,11 @@ app.use("/auth", routes.userRoutes);
 // category route
 app.use("/category", routes.categoryRoutes);
 
-// product route 
-app.use('/product', routes.productRoutes)
+// product route
+app.use("/product", routes.productRoutes);
+
+// admin route handler
+app.use("/admin", routes.adminRoutes);
 
 // root route handler
 app.get("/", (req, res) => {

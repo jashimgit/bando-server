@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const verifyUserToken = (req, res, next) => {
+const verifyAdminToken = (req, res, next) => {
   const token = req.headers.token;
   if (!token)
     return res
@@ -8,8 +8,8 @@ const verifyUserToken = (req, res, next) => {
       .send({ name: "Access Denied", message: "access denied" });
 
   try {
-    const user = jwt.verify(token, process.env.USER_SECRET);
-    req.user = user;
+    const admin = jwt.verify(token, process.env.ADMIN_SECRET);
+    req.admin = admin;
     next();
   } catch (err) {
     return res
@@ -18,4 +18,4 @@ const verifyUserToken = (req, res, next) => {
   }
 };
 
-export default verifyUserToken;
+export default verifyAdminToken;
