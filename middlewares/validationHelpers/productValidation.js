@@ -12,7 +12,7 @@ const schema = Joi.object({
   size: Joi.string(),
   height: Joi.string(),
   width: Joi.string(),
-  status: Joi.string(),
+  status: Joi.string().valid("pending", "active", "rejected"),
   cupon: Joi.string(),
 });
 

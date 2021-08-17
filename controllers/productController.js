@@ -7,6 +7,14 @@ const { Product } = models;
 
 //get all product for admin
 export const getAllProductForAdmin = async (req, res) => {
+  const { user } = req;
+  if (user.role !== "admin") {
+    return sendResponse(res, 403, {
+      name: "Forbidden",
+      message: "There is not your access",
+      success: false,
+    });
+  }
   try {
     const products = await Product.find()
       .select(" -__v")
@@ -33,7 +41,7 @@ export const getAllProductForAdmin = async (req, res) => {
 //get all product for user
 export const getAllProductForUser = async (req, res) => {
   try {
-    const products = await Product.find({ status: "approved" })
+    const products = await Product.find({ status: "active" })
       .select(" -__v")
       .populate("seller", "name email photoUrl createdAt phone -_id");
     if (!products.length) {
@@ -57,8 +65,9 @@ export const getAllProductForUser = async (req, res) => {
 
 //post a single product
 export const postSingleProduct = async (req, res) => {
+  const { user, body } = req;
   //check user or seller
-  if (!isSeller(req)) {
+  if (user.role !== "seller") {
     return sendResponse(res, 403, {
       name: "Forbidden",
       success: false,
@@ -66,7 +75,7 @@ export const postSingleProduct = async (req, res) => {
     });
   }
 
-  const product = { ...req.body, seller: req.user._id };
+  const product = { ...body, seller: user._id };
   const data = new Product(product);
   try {
     const result = await data.save();
@@ -127,7 +136,6 @@ export const updateSingleProduct = async (req, res) => {
 };
 
 // delete product
-
 export const deleteSingleProduct = async (req, res) => {
   const id = req.params.id;
 
@@ -168,10 +176,19 @@ export const deleteSingleProduct = async (req, res) => {
 };
 
 export const updateProductStatus = async (req, res) => {
+  const { body, user, params } = req;
+
+  if (user.role !== "admin") {
+    return sendResponse(res, 403, {
+      name: "Forbidden",
+      success: false,
+      message: "only admin can do this operation",
+    });
+  }
   try {
     const result = await Product.updateOne(
-      { _id: req.params.id },
-      { status: req.body.status }
+      { _id: params.id },
+      { status: body.status }
     );
     if (!result)
       return sendResponse(res, 404, {

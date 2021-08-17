@@ -1,8 +1,7 @@
-import User from "./userModel";
 import Category from "./categoryModel";
 import Product from "./productModel";
-import Admin from "./adminModel";
+import Auth from "./authModel";
 
-const models = { User, Category, Product, Admin };
+const models = { Category, Product, Auth };
 
 export default models;
