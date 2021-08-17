@@ -5,7 +5,7 @@ const verifyAdminToken = (req, res, next) => {
   if (!token)
     return res
       .status(401)
-      .send({ name: "Access Denied", message: "access denied" });
+      .send({ name: "Access Denied", message: "access denied", success: false });
 
   try {
     const admin = jwt.verify(token, process.env.ADMIN_SECRET);
