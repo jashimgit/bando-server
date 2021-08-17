@@ -6,10 +6,10 @@ export const validateRegister = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
-    password: Joi.string().min(6),
+    password: Joi.string().min(6).required(),
     photoUrl: Joi.string(),
     phone: Joi.string().required(),
-    role: Joi.string().required(),
+    role: Joi.string().required().valid("user", "seller"),
     status: Joi.string(),
     license: Joi.string(),
   });
@@ -30,7 +30,7 @@ export const validateLogin = (req, res, next) => {
 
   const schema = Joi.object({
     email: Joi.string().required().email(),
-    password: Joi.string().required(),
+    password: Joi.string().required().min(6),
   });
 
   const { error } = schema.validate(data);
