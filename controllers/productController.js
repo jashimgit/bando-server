@@ -5,11 +5,36 @@ import models from "../models";
 
 const { Product } = models;
 
-//get all product
-export const getAllProduct = async (req, res) => {
+//get all product for admin
+export const getAllProductForAdmin = async (req, res) => {
   try {
     const products = await Product.find()
-      .select("-status -__v")
+      .select(" -__v")
+      .populate("seller", "name email photoUrl createdAt phone -_id");
+    if (!products.length) {
+      return sendResponse(res, 404, {
+        name: "Not Fount",
+        message: "there is not product in this collection",
+      });
+    }
+    return sendResponse(res, 200, {
+      name: "OK",
+      products,
+      message: "Total product : " + products.length,
+    });
+  } catch (error) {
+    return sendResponse(res, 500, {
+      name: "Internal Server Error",
+      message: error.message,
+    });
+  }
+};
+
+//get all product for user
+export const getAllProductForUser = async (req, res) => {
+  try {
+    const products = await Product.find({ status: "approved" })
+      .select(" -__v")
       .populate("seller", "name email photoUrl createdAt phone -_id");
     if (!products.length) {
       return sendResponse(res, 404, {
@@ -138,6 +163,33 @@ export const deleteSingleProduct = async (req, res) => {
       name: "Internal Server Error",
       message: err.message,
       success: false,
+    });
+  }
+};
+
+export const updateProductStatus = async (req, res) => {
+  try {
+    const result = await Product.updateOne(
+      { _id: req.params.id },
+      { status: req.body.status }
+    );
+    if (!result)
+      return sendResponse(res, 404, {
+        name: "Not found",
+        success: false,
+        message: "Product not found by id:" + req.params.id,
+      });
+
+    return sendResponse(res, 200, {
+      name: "OK",
+      success: true,
+      message: "updated product id: " + req.params.id,
+    });
+  } catch (err) {
+    return sendResponse(res, 500, {
+      name: "Internal Server error",
+      success: false,
+      message: err.message,
     });
   }
 };
