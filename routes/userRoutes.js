@@ -1,4 +1,3 @@
-
 import express from "express";
 import { findByUserRole, getAllUsers, getUserById, handleUserLogin, handleUserSignup } from "../controllers/userController";
 import { validateLogin, validateRegister } from '../middlewares/validationHelpers/userValidation';
