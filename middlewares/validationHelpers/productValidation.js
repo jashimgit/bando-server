@@ -5,7 +5,7 @@ const schema = Joi.object({
   category: Joi.array().items(Joi.string()).required(),
   subCategory: Joi.string().required(),
   brand: Joi.string().required(),
-  model: Joi.string(),
+  model: Joi.string().empty(''),
   images: Joi.array().items(Joi.string()).required(),
   price: Joi.number().required(),
   color: Joi.string().required(),
@@ -14,7 +14,7 @@ const schema = Joi.object({
   width: Joi.string(),
   status: Joi.string().valid("pending", "active", "rejected"),
   cupon: Joi.string(),
-  description:Joi.string().required()
+  description: Joi.string().required(),
 });
 
 export const productValidation = (req, res, next) => {
