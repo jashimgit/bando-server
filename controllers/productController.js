@@ -1,4 +1,4 @@
-import { isSeller, sendResponse } from '../helpersFunctions';
+import { isSeller, sendResponse } from "../helpersFunctions";
 import models from "../models";
 
 const { Product } = models;
@@ -23,11 +23,12 @@ export const getAllProductForAdmin = async (req, res) => {
         message: "there is not product in this collection",
       });
     }
+    return sendResponse(res, 200, { success: true, products });
   } catch (err) {
     return sendResponse(res, 500, {
-        name: "Internal Server error",
-        success: false,
-        message: err.message,
+      name: "Internal Server error",
+      success: false,
+      message: err.message,
     });
   }
 };
@@ -44,14 +45,15 @@ export const getAllProductForUser = async (req, res) => {
         message: "there is not product in this collection",
       });
     }
+    return sendResponse(res, 200, { success: true, products });
   } catch (err) {
     return sendResponse(res, 500, {
-        name: "Internal Server error",
-        success: false,
-        message: err.message,
+      name: "Internal Server error",
+      success: false,
+      message: err.message,
     });
   }
-} 
+};
 // post a single product
 export const postSingleProduct = async (req, res) => {
   const { user, body } = req;
@@ -84,86 +86,86 @@ export const postSingleProduct = async (req, res) => {
 
 // update single product
 export const updateSingleProduct = async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    // check user or seller
-    // const isSeller = isSellerCheck(req);
-    if (!isSeller(req)) {
-        return sendResponse(res, 403, {
-            name: "Forbidden",
-            success: false,
-            message: "only seller can update product",
-        });
-    }
+  // check user or seller
+  // const isSeller = isSellerCheck(req);
+  if (!isSeller(req)) {
+    return sendResponse(res, 403, {
+      name: "Forbidden",
+      success: false,
+      message: "only seller can update product",
+    });
+  }
 
-    try {
-        const updatedProduct = await Product.findOneAndUpdate(
-            { _id: id, seller: req.user._id },
-            req.body,
-            {
-                new: true,
-            },
-        );
-        if (!updatedProduct) {
-            return sendResponse(res, 403, {
-                name: "Forbidden",
-                success: false,
-                message: "Shit man! This is not your product.",
-            });
-        }
-        return sendResponse(res, 200, {
-            name: "OK",
-            success: true,
-            message: `update data id: ${updatedProduct._id}`,
-        });
-    } catch (err) {
-        return sendResponse(res, 500, {
-            name: "Internal Server Error",
-            message: err.message,
-            success: false,
-        });
+  try {
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: id, seller: req.user._id },
+      req.body,
+      {
+        new: true,
+      }
+    );
+    if (!updatedProduct) {
+      return sendResponse(res, 403, {
+        name: "Forbidden",
+        success: false,
+        message: "Shit man! This is not your product.",
+      });
     }
+    return sendResponse(res, 200, {
+      name: "OK",
+      success: true,
+      message: `update data id: ${updatedProduct._id}`,
+    });
+  } catch (err) {
+    return sendResponse(res, 500, {
+      name: "Internal Server Error",
+      message: err.message,
+      success: false,
+    });
+  }
 };
 
 // delete product
 export const deleteSingleProduct = async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    // check user or seller
-    if (!isSeller(req)) {
-        return sendResponse(res, 403, {
-            name: "Forbidden",
-            success: false,
-            message: "only seller can delete product",
-        });
+  // check user or seller
+  if (!isSeller(req)) {
+    return sendResponse(res, 403, {
+      name: "Forbidden",
+      success: false,
+      message: "only seller can delete product",
+    });
+  }
+
+  // delete product
+  try {
+    const deletedProduct = await Product.findOneAndDelete({
+      _id: id,
+      seller: req.user._id,
+    });
+
+    if (!deletedProduct) {
+      return sendResponse(res, 403, {
+        name: "Forbidden",
+        success: false,
+        message: "Oh shit! This is not your product.",
+      });
     }
-
-    // delete product
-    try {
-        const deletedProduct = await Product.findOneAndDelete({
-            _id: id,
-            seller: req.user._id,
-        });
-
-        if (!deletedProduct) {
-            return sendResponse(res, 403, {
-                name: "Forbidden",
-                success: false,
-                message: "Oh shit! This is not your product.",
-            });
-        }
-        return sendResponse(res, 200, {
-            name: "OK",
-            success: true,
-            message: `Deleted product id: ${id}`,
-        });
-    } catch (err) {
-        return sendResponse(res, 500, {
-            name: "Internal Server Error",
-            message: err.message,
-            success: false,
-        });
-    }
+    return sendResponse(res, 200, {
+      name: "OK",
+      success: true,
+      message: `Deleted product id: ${id}`,
+    });
+  } catch (err) {
+    return sendResponse(res, 500, {
+      name: "Internal Server Error",
+      message: err.message,
+      success: false,
+    });
+  }
 };
 
 export const updateProductStatus = async (req, res) => {
@@ -188,16 +190,16 @@ export const updateProductStatus = async (req, res) => {
         message: "Product not found by id:" + req.params.id,
       });
 
-        return sendResponse(res, 200, {
-            name: "OK",
-            success: true,
-            message: `updated product id: ${req.params.id}`,
-        });
-    } catch (err) {
-        return sendResponse(res, 500, {
-            name: "Internal Server error",
-            success: false,
-            message: err.message,
-        });
-    }
+    return sendResponse(res, 200, {
+      name: "OK",
+      success: true,
+      message: `updated product id: ${req.params.id}`,
+    });
+  } catch (err) {
+    return sendResponse(res, 500, {
+      name: "Internal Server error",
+      success: false,
+      message: err.message,
+    });
+  }
 };
