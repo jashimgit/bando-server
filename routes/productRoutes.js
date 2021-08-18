@@ -6,6 +6,7 @@ import {
   updateSingleProduct,
   updateProductStatus,
   getAllProductForUser,
+  getFeatureProductForUser,
 } from "../controllers/productController";
 import { updateStatusValidation } from "../middlewares/validationHelpers/productStatusUpdateValidation";
 import { productValidation } from "../middlewares/validationHelpers/productValidation";
@@ -15,6 +16,7 @@ const router = express.Router();
 
 router.get("/all/admin", verifyAuthToken, getAllProductForAdmin);
 router.get("/all/user", getAllProductForUser);
+router.get("/feature/", getFeatureProductForUser);
 
 // only seller can add, update, product
 router.post("/add", verifyAuthToken, productValidation, postSingleProduct);

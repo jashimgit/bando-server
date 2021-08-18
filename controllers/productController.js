@@ -54,6 +54,29 @@ export const getAllProductForUser = async (req, res) => {
     });
   }
 };
+
+// get all product for user
+export const getFeatureProductForUser = async (req, res) => {
+  try {
+    const products = await Product.find({ status: "active", isFeature: true })
+      .select(" -__v")
+      .populate("seller", "name email photoUrl createdAt phone -_id");
+    if (!products.length) {
+      return sendResponse(res, 404, {
+        name: "Not Fount",
+        message: "there is not product in this collection",
+      });
+    }
+    return sendResponse(res, 200, { success: true, products });
+  } catch (err) {
+    return sendResponse(res, 500, {
+      name: "Internal Server error",
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 // post a single product
 export const postSingleProduct = async (req, res) => {
   const { user, body } = req;
