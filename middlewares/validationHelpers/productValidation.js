@@ -5,7 +5,7 @@ const schema = Joi.object({
   category: Joi.array().items(Joi.string()).required(),
   subCategory: Joi.string().required(),
   brand: Joi.string().required(),
-  model: Joi.string().required(),
+  model: Joi.string(),
   images: Joi.array().items(Joi.string()).required(),
   price: Joi.number().required(),
   color: Joi.string().required(),
