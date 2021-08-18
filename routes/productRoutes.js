@@ -7,17 +7,33 @@ import {
   updateProductStatus,
   getAllProductForUser,
 } from "../controllers/productController";
+import { updateStatusValidation } from "../middlewares/validationHelpers/productStatusUpdateValidation";
 import { productValidation } from "../middlewares/validationHelpers/productValidation";
-import verifyAdminToken from "../middlewares/verifyAdminToken";
-import verifyUserToken from "../middlewares/verifyUserToken";
+import verifyAuthToken from "../middlewares/verifyAuthToken";
 
 const router = express.Router();
 
-router.get("/all/admin", verifyAdminToken, getAllProductForAdmin);
+router.get("/all/admin", verifyAuthToken, getAllProductForAdmin);
 router.get("/all/user", getAllProductForUser);
-router.post("/add", verifyUserToken, productValidation, postSingleProduct);
-router.put("/update/:id", verifyUserToken, productValidation, updateSingleProduct);
-router.put("/updateStatus/:id", verifyAdminToken, updateProductStatus);
-router.delete("/delete/:id", verifyUserToken, deleteSingleProduct);
+
+// only seller can add, update, product
+router.post("/add", verifyAuthToken, productValidation, postSingleProduct);
+router.put(
+  "/update/:id",
+  verifyAuthToken,
+  productValidation,
+  updateSingleProduct
+);
+
+// seller and admin can delete product
+router.delete("/delete/:id", verifyAuthToken, deleteSingleProduct);
+
+// only admin can dot this admin
+router.put(
+  "/updateStatus/:id",
+  verifyAuthToken,
+  updateStatusValidation,
+  updateProductStatus
+);
 
 export default router;

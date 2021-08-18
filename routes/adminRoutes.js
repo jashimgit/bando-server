@@ -1,25 +1,18 @@
 import express from "express";
-import {
-  handleAdminLogin,
-  handleMakeAdmin,
-} from "../controllers/adminController";
-import {
-  adminLoginValidation,
-  makeAdminValidation,
-} from "../middlewares/validationHelpers/adminValidation";
-import verifyAdminToken from "../middlewares/verifyAdminToken";
+import { handleMakeAdmin } from "../controllers/adminController";
+import { makeAdminValidation } from "../middlewares/validationHelpers/adminValidation";
+import verifyAuthToken from "../middlewares/verifyAuthToken";
 
 const router = express.Router();
 
 // make admin route handle
 router.post(
-  "/makeAdmin",
-  verifyAdminToken,
+  "/add",
+  verifyAuthToken,
   makeAdminValidation,
   handleMakeAdmin
 );
 
-// admin login route handle
-router.post("/login", adminLoginValidation, handleAdminLogin);
+// 
 
 export default router;

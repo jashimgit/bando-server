@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const productSchema = mongoose.Schema({
   name: { type: String, required: true },
-  seller: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+  seller: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Auth" },
   category: {
     type: [String],
     required: true,
@@ -16,7 +16,7 @@ const productSchema = mongoose.Schema({
   size: { type: String, default: null },
   height: { type: Number, default: null },
   width: { type: Number, default: null },
-  status: { type: String, default: "" },
+  status: { type: String, default: "pending" },
   cupon: { type: String, default: "" },
   uploadAt: { type: Date, default: new Date() },
 });

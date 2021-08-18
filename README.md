@@ -23,5 +23,5 @@ Done:
 2. register https://pacific-waters-78461.herokuapp.com/auth/signup
 3. add product: https://pacific-waters-78461.herokuapp.com/product
 4. get all users: https://pacific-waters-78461.herokuapp.com/auth/users
-5. get all users: https://pacific-waters-78461.herokuapp.com/auth/users/:role
-6. get all users: https://pacific-waters-78461.herokuapp.com/auth/user/:id
+5. get all user role: https://pacific-waters-78461.herokuapp.com/auth/users/:role
+6. get user by id: https://pacific-waters-78461.herokuapp.com/auth/user/:id

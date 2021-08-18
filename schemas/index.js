@@ -1,13 +1,11 @@
-import userSchema from "./userSchema";
-import categorySchema from './categorySchema';
+import authSchema from "./authSchema";
+import categorySchema from "./categorySchema";
 import productSchema from "./productSchema";
-import adminSchema from "./adminSchema";
 
 const schema = {
-    userSchema,
-    categorySchema,
-    productSchema,
-    adminSchema
-}
+  authSchema,
+  categorySchema,
+  productSchema,
+};
 
 export default schema;
