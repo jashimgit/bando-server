@@ -5,90 +5,68 @@ const { Product } = models;
 
 // get all product for admin
 export const getAllProductForAdmin = async (req, res) => {
-    const { user } = req;
-    if (user.role !== "admin") {
-        return sendResponse(res, 403, {
-            name: "Forbidden",
-            message: "There is not your access",
-            success: false,
-        });
-    }
-    try {
-        const products = await Product.find()
-            .select(" -__v")
-            .populate("seller", "name email photoUrl createdAt phone -_id");
-        if (!products.length) {
-            return sendResponse(res, 404, {
-                name: "Not Fount",
-                message: "there is not product in this collection",
-            });
-        }
-        return sendResponse(res, 200, {
-            name: "OK",
-            products,
-            message: `Total product : ${products.length}`,
-        });
-    } catch (error) {
-        return sendResponse(res, 500, {
-            name: "Internal Server Error",
-            message: error.message,
-        });
+  const { user } = req;
+  if (user.role !== "admin") {
+    return sendResponse(res, 403, {
+      name: "Forbidden",
+      message: "There is not your access",
+      success: false,
+    });
+  }
+  try {
+    const products = await Product.find()
+      .select(" -__v")
+      .populate("seller", "name email photoUrl createdAt phone -_id");
+    if (!products.length) {
+      return sendResponse(res, 404, {
+        name: "Not Fount",
+        message: "there is not product in this collection",
+      });
     }
 };
 
 // get all product for user
 export const getAllProductForUser = async (req, res) => {
-    try {
-        const products = await Product.find({ status: "active" })
-            .select(" -__v")
-            .populate("seller", "name email photoUrl createdAt phone -_id");
-        if (!products.length) {
-            return sendResponse(res, 404, {
-                name: "Not Fount",
-                message: "there is not product in this collection",
-            });
-        }
-        return sendResponse(res, 200, {
-            name: "OK",
-            products,
-            message: `Total product : ${products.length}`,
-        });
-    } catch (error) {
-        return sendResponse(res, 500, {
-            name: "Internal Server Error",
-            message: error.message,
-        });
+  try {
+    const products = await Product.find({ status: "active" })
+      .select(" -__v")
+      .populate("seller", "name email photoUrl createdAt phone -_id");
+    if (!products.length) {
+      return sendResponse(res, 404, {
+        name: "Not Fount",
+        message: "there is not product in this collection",
+      });
     }
 };
 
 // post a single product
 export const postSingleProduct = async (req, res) => {
-    const { user, body } = req;
-    // check user or seller
-    if (user.role !== "seller") {
-        return sendResponse(res, 403, {
-            name: "Forbidden",
-            success: false,
-            message: "only seller can add product",
-        });
-    }
+  const { user, body } = req;
+  //check user or seller
+  if (user.role !== "seller") {
+    return sendResponse(res, 403, {
+      name: "Forbidden",
+      success: false,
+      message: "only seller can add product",
+    });
+  }
 
-    const product = { ...body, seller: user._id };
-    const data = new Product(product);
-    try {
-        const result = await data.save();
-        return sendResponse(res, 200, {
-            name: "OK",
-            success: true,
-            message: `Inserted data id: ${result._id}`,
-        });
-    } catch (error) {
-        return sendResponse(res, 500, {
-            name: "Internal Server Error",
-            message: error.message,
-            success: false,
-        });
-    }
+  const product = { ...body, seller: user._id };
+  const data = new Product(product);
+  try {
+    const result = await data.save();
+    return sendResponse(res, 200, {
+      name: "OK",
+      success: true,
+      message: "Inserted data id: " + result._id,
+    });
+  } catch (error) {
+    return sendResponse(res, 500, {
+      name: "Internal Server Error",
+      message: error.message,
+      success: false,
+    });
+  }
 };
 
 // update single product
@@ -176,6 +154,7 @@ export const deleteSingleProduct = async (req, res) => {
 };
 
 export const updateProductStatus = async (req, res) => {
+<<<<<<< HEAD
     const { body, user, params } = req;
 
     if (user.role !== "admin") {
@@ -194,6 +173,28 @@ export const updateProductStatus = async (req, res) => {
                 message: `Product not found by id:${req.params.id}`,
             });
         }
+=======
+  const { body, user, params } = req;
+
+  if (user.role !== "admin") {
+    return sendResponse(res, 403, {
+      name: "Forbidden",
+      success: false,
+      message: "only admin can do this operation",
+    });
+  }
+  try {
+    const result = await Product.updateOne(
+      { _id: params.id },
+      { status: body.status }
+    );
+    if (!result)
+      return sendResponse(res, 404, {
+        name: "Not found",
+        success: false,
+        message: "Product not found by id:" + req.params.id,
+      });
+>>>>>>> 3058b336674197e237c39adafed746690a248773
 
         return sendResponse(res, 200, {
             name: "OK",

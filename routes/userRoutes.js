@@ -1,7 +1,7 @@
-import express from 'express';
-import { findByUserRole, getAllUsers } from '../controllers/adminController';
-import { getUserById } from '../controllers/userController';
-import verifyAuthToken from '../middlewares/verifyAuthToken';
+import express from "express";
+import { findByUserRole, getAllUsers } from "../controllers/adminController";
+import { getUserById } from "../controllers/userController";
+import verifyAuthToken from "../middlewares/verifyAuthToken";
 
 const router = express.Router();
 
@@ -11,15 +11,14 @@ const router = express.Router();
  *  @return array
  */
 //
-router.get('/all', verifyAuthToken, getAllUsers);
+router.get("/all", verifyAuthToken, getAllUsers);
 
 /**
  *  Get user by id
  *  /user/:id GET
  *  @return array
  */
-
-router.get('/:id', verifyAuthToken, getUserById);
+router.get("/:id", verifyAuthToken, getUserById);
 
 /**
  * Get user by role
@@ -27,6 +26,6 @@ router.get('/:id', verifyAuthToken, getUserById);
  * @return object
  *
  */
-router.get('/role/:role', verifyAuthToken, findByUserRole);
+router.get("/role/:role", verifyAuthToken, findByUserRole);
 
 export default router;

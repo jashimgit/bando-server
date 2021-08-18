@@ -20,7 +20,13 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 // user login/ registration routes
-app.use('/auth', routes.userRoutes);
+app.use("/auth", routes.authRoutes);
+
+// user all  routes
+app.use("/user", routes.userRoutes);
+
+// admin route handle
+app.use("/admin", routes.adminRoutes);
 
 // category route
 app.use('/category', routes.categoryRoutes);
@@ -29,7 +35,7 @@ app.use('/category', routes.categoryRoutes);
 app.use('/product', routes.productRoutes);
 
 // admin route handler
-app.use('/admin', routes.adminRoutes);
+app.use("/admin", routes.adminRoutes);
 
 // root route handler
 app.get('/', (req, res) => {
