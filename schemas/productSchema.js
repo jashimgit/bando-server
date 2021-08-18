@@ -20,7 +20,6 @@ const productSchema = mongoose.Schema({
   cupon: { type: String, default: "" },
   isFeature: { type: Boolean, default: false },
   uploadAt: { type: Date, default: new Date() },
-  isFeature: { type: Boolean, default: false },
 });
 
 export default productSchema;
