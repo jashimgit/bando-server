@@ -18,6 +18,7 @@ const productSchema = mongoose.Schema({
   width: { type: Number, default: null },
   status: { type: String, default: "pending" },
   cupon: { type: String, default: "" },
+  isFeature: { type: Boolean, default: false },
   uploadAt: { type: Date, default: new Date() },
 });
 
