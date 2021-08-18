@@ -179,7 +179,7 @@ export const updateProductStatus = async (req, res) => {
   try {
     const result = await Product.updateOne(
       { _id: params.id },
-      { status: body.status }
+      { status: body.status, isFeature: body.isFeature }
     );
     if (!result)
       return sendResponse(res, 404, {
