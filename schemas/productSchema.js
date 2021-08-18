@@ -19,6 +19,7 @@ const productSchema = mongoose.Schema({
   status: { type: String, default: "pending" },
   cupon: { type: String, default: "" },
   uploadAt: { type: Date, default: new Date() },
+  isFeature: { type: Boolean, default: false },
 });
 
 export default productSchema;

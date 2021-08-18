@@ -30,7 +30,7 @@ router.delete("/delete/:id", verifyAuthToken, deleteSingleProduct);
 
 // only admin can dot this admin
 router.put(
-  "/updateStatus/:id",
+  "/update/status-isFeatured/:id",
   verifyAuthToken,
   updateStatusValidation,
   updateProductStatus
