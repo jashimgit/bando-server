@@ -1,6 +1,6 @@
-import bcrypt from 'bcrypt';
-import { sendResponse } from '../helpersFunctions';
-import models from '../models';
+import bcrypt from "bcrypt";
+import { sendResponse } from "../helpersFunctions";
+import models from "../models";
 
 const { Auth } = models;
 
@@ -62,73 +62,15 @@ export const handleMakeAdmin = async (req, res) => {
 // user login handle
 export const handleAdminLogin = async (req, res) => {
   const { email, password } = req.body;
-  try {
-    const admin = await Auth.findOne({ email: email }).select("-__v");
 
-    /// return if not found document
-    if (!admin) {
-      return sendResponse(res, 404, {
-        name: "Not Found",
-        message: "Admin Not found",
-        success: false,
-      });
-    }
+  const admin = await Auth.findOne({ email: email }).select("-__v");
 
-    try {
-        const users = await Auth.find({}).select('-password').exec();
-        if (!users) {
-            return sendResponse(res, 404, {
-                name: 'Not Found',
-                success: false,
-                message: 'User not found',
-            });
-        }
-        return res.status(200).json({ success: true, users });
-    } catch (error) {
-        res.status(500).json({
-            name: 'Internal Server Error',
-            success: false,
-            message: err.message,
-        });
-    }
-};
-
-// Get all user where role
-export const findByUserRole = async (req, res) => {
-    if (req.user.role !== 'admin') {
-        return sendResponse(res, 403, {
-            name: 'Forbidden',
-            success: false,
-            message: 'Only admin can see all users',
-        });
-    }
-    const { role } = req.params;
-    try {
-        const result = await Auth.find({ role }).select('-password').exec();
-        if (!result.length) {
-            return sendResponse(res, 404, {
-                name: 'Not Found',
-                success: false,
-                message: 'User not found',
-            });
-        }
-        return res.status(200).json({ success: true, result });
-    } catch (err) {
-        res.status(500).json({
-            name: 'Internal Server Error',
-            success: false,
-            message: err.message,
-        });
-    }
-};
-
-// get all users
-export const getAllUsers = async (req, res) => {
-  if (req.user.role !== "admin") {
-    return sendResponse(res, 403, {
-      name: "Forbidden",
+  /// return if not found document
+  if (!admin) {
+    return sendResponse(res, 404, {
+      name: "Not Found",
+      message: "Admin Not found",
       success: false,
-      message: "Only admin can see all users",
     });
   }
 
@@ -179,3 +121,33 @@ export const findByUserRole = async (req, res) => {
     });
   }
 };
+
+// get all users
+export const getAllUsers = async (req, res) => {
+  if (req.user.role !== "admin") {
+    return sendResponse(res, 403, {
+      name: "Forbidden",
+      success: false,
+      message: "Only admin can see all users",
+    });
+  }
+
+  try {
+    const users = await Auth.find({}).select("-password").exec();
+    if (!users) {
+      return sendResponse(res, 404, {
+        name: "Not Found",
+        success: false,
+        message: "User not found",
+      });
+    }
+    return res.status(200).json({ success: true, users });
+  } catch (error) {
+    res.status(500).json({
+      name: "Internal Server Error",
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
