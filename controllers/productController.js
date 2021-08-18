@@ -1,4 +1,4 @@
-import { isSeller, sendResponse } from "../helpersFunctions";
+import { isSeller, sendResponse } from '../helpersFunctions';
 import models from "../models";
 
 const { Product } = models;
@@ -23,6 +23,13 @@ export const getAllProductForAdmin = async (req, res) => {
         message: "there is not product in this collection",
       });
     }
+  } catch (err) {
+    return sendResponse(res, 500, {
+        name: "Internal Server error",
+        success: false,
+        message: err.message,
+    });
+  }
 };
 
 // get all product for user
@@ -37,8 +44,14 @@ export const getAllProductForUser = async (req, res) => {
         message: "there is not product in this collection",
       });
     }
-};
-
+  } catch (err) {
+    return sendResponse(res, 500, {
+        name: "Internal Server error",
+        success: false,
+        message: err.message,
+    });
+  }
+} 
 // post a single product
 export const postSingleProduct = async (req, res) => {
   const { user, body } = req;
@@ -154,26 +167,6 @@ export const deleteSingleProduct = async (req, res) => {
 };
 
 export const updateProductStatus = async (req, res) => {
-<<<<<<< HEAD
-    const { body, user, params } = req;
-
-    if (user.role !== "admin") {
-        return sendResponse(res, 403, {
-            name: "Forbidden",
-            success: false,
-            message: "only admin can do this operation",
-        });
-    }
-    try {
-        const result = await Product.updateOne({ _id: params.id }, { status: body.status });
-        if (!result) {
-            return sendResponse(res, 404, {
-                name: "Not found",
-                success: false,
-                message: `Product not found by id:${req.params.id}`,
-            });
-        }
-=======
   const { body, user, params } = req;
 
   if (user.role !== "admin") {
@@ -194,7 +187,6 @@ export const updateProductStatus = async (req, res) => {
         success: false,
         message: "Product not found by id:" + req.params.id,
       });
->>>>>>> 3058b336674197e237c39adafed746690a248773
 
         return sendResponse(res, 200, {
             name: "OK",
