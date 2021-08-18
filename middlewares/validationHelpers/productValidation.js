@@ -9,11 +9,11 @@ const schema = Joi.object({
   images: Joi.array().items(Joi.string()).required(),
   price: Joi.number().required(),
   color: Joi.string().required(),
-  size: Joi.string(),
-  height: Joi.string(),
-  width: Joi.string(),
+  size: Joi.string().empty(''),
+  height: Joi.string().empty(''),
+  width: Joi.string().empty(''),
   status: Joi.string().valid("pending", "active", "rejected"),
-  cupon: Joi.string(),
+  cupon: Joi.string().empty(''),
   description: Joi.string().required(),
 });
 
