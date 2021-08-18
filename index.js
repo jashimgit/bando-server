@@ -1,8 +1,9 @@
-import cors from "cors";
-import dotenv from "dotenv";
-import express from "express";
-import connectWithDB from "./mongoManager";
-import routes from "./routes";
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import connectWithDB from './mongoManager';
+import routes from './routes';
+
 dotenv.config();
 
 const app = express();
@@ -19,25 +20,22 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 // user login/ registration routes
-app.use("/auth", routes.userRoutes);
-
-
+app.use('/auth', routes.userRoutes);
 
 // category route
-app.use("/category", routes.categoryRoutes);
+app.use('/category', routes.categoryRoutes);
 
 // product route
-app.use("/product", routes.productRoutes);
+app.use('/product', routes.productRoutes);
 
 // admin route handler
-app.use("/admin", routes.adminRoutes);
-
+app.use('/admin', routes.adminRoutes);
 
 // root route handler
-app.get("/", (req, res) => {
-  res.send("Welcome to Bando server");
+app.get('/', (req, res) => {
+    res.send('Welcome to Bando server');
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });

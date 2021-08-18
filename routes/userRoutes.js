@@ -32,7 +32,7 @@ router.get('/users', getAllUsers);
  *  /user/:id GET
  *  @return array
  */
- router.get('/user/:id', getUserById);
+router.get('/user/:id', getUserById);
 
 /**
  * Get user by role
