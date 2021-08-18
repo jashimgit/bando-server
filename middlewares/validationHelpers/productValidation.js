@@ -14,6 +14,7 @@ const schema = Joi.object({
   width: Joi.string(),
   status: Joi.string().valid("pending", "active", "rejected"),
   cupon: Joi.string(),
+  description:Joi.string().required()
 });
 
 export const productValidation = (req, res, next) => {
