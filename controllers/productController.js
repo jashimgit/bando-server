@@ -33,6 +33,36 @@ export const getAllProductForAdmin = async (req, res) => {
   }
 };
 
+// get all product for seller
+export const getAllProductForSeller = async (req, res) => {
+  const { user, params } = req;
+  if (user.role === "user") {
+    return sendResponse(res, 403, {
+      name: "Forbidden",
+      message: "There is not your access",
+      success: false,
+    });
+  }
+  try {
+    const products = await Product.find({ seller: params.id })
+      .select(" -__v")
+      .populate("seller", "name email photoUrl createdAt phone -_id");
+    if (!products.length) {
+      return sendResponse(res, 404, {
+        name: "Not Fount",
+        message: "there is not product in this collection",
+      });
+    }
+    return sendResponse(res, 200, { success: true, products });
+  } catch (err) {
+    return sendResponse(res, 500, {
+      name: "Internal Server error",
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 // get all product for user
 export const getAllProductForUser = async (req, res) => {
   try {
