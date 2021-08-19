@@ -1,9 +1,17 @@
 //check is seller
 export const isSeller = (req) => {
-  if (req.user.role !== "seller") {
-    return false;
+  if (req.user.role === "seller") {
+    return true;
   }
-  return true;
+  return false;
+};
+
+//check user is admin and return true or false
+export const isAdmin = (req) => {
+  if (req.user.role === "admin") {
+    return true;
+  }
+  return false;
 };
 
 // send response
