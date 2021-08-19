@@ -35,7 +35,7 @@ Bando server is built with latest Express Js framework in association with popul
 - [x] Refactor Code
 - [x] User Authentication
 - [x] Product API
-- [x] Order API
+
 
 
 
