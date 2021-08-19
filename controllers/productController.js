@@ -34,15 +34,26 @@ export const getAllProductForAdmin = async (req, res) => {
 };
 
 // get all product for seller
-export const getAllProductForSeller = async (req, res) => {
+export const getSellerProductsForSellerAndAdmin = async (req, res) => {
   const { user, params } = req;
-  if (user.role === "user") {
+
+  // check user is seller or admin. if not seller or admin then return
+  if (!(isSeller(req) || isAdmin(req))) {
+    // here user is not a seller or not a admin
     return sendResponse(res, 403, {
       name: "Forbidden",
       message: "There is not your access",
       success: false,
     });
   }
+
+  // check auth seller and requested seller is same. if not return with error
+  if (isSeller(req)) {
+    if (user._id !== params.id) {
+      return sendResponse(res, 403, {success:false, message:"Shit man! You are trying to see others seller products!"})
+    }
+  }
+
   try {
     const products = await Product.find({ seller: params.id })
       .select(" -__v")
