@@ -7,7 +7,7 @@ import {
   updateProductStatus,
   getAllProductForUser,
   getFeatureProductForUser,
-  getAllProductForSeller,
+  getSellerProductsForSellerAndAdmin,
 } from "../controllers/productController";
 import { updateStatusValidation } from "../middlewares/validationHelpers/productStatusUpdateValidation";
 import { productValidation } from "../middlewares/validationHelpers/productValidation";
@@ -16,7 +16,7 @@ import verifyAuthToken from "../middlewares/verifyAuthToken";
 const router = express.Router();
 
 router.get("/all/admin", verifyAuthToken, getAllProductForAdmin);
-router.get("/all/seller/:id", verifyAuthToken, getAllProductForSeller);
+router.get("/all/seller/:id", verifyAuthToken, getSellerProductsForSellerAndAdmin);
 router.get("/all/user", getAllProductForUser);
 router.get("/feature/", getFeatureProductForUser);
 
