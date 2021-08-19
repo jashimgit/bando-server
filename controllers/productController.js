@@ -1,4 +1,4 @@
-import { isSeller, sendResponse } from "../helpersFunctions";
+import { isSeller, sendResponse, isAdmin } from "../helpersFunctions";
 import models from "../models";
 
 const { Product } = models;
@@ -184,29 +184,51 @@ export const updateSingleProduct = async (req, res) => {
 export const deleteSingleProduct = async (req, res) => {
   const { id } = req.params;
 
-  // check user or seller
-  if (!isSeller(req)) {
+  if (!(isSeller(req) || isAdmin(req))) {
+    // here user is not seller or admin
     return sendResponse(res, 403, {
       name: "Forbidden",
       success: false,
-      message: "only seller can delete product",
+      message: "Your have not access to delete product",
     });
   }
 
   // delete product
   try {
-    const deletedProduct = await Product.findOneAndDelete({
-      _id: id,
-      seller: req.user._id,
-    });
+    let deletedProduct;
 
-    if (!deletedProduct) {
-      return sendResponse(res, 403, {
-        name: "Forbidden",
-        success: false,
-        message: "Oh shit! This is not your product.",
+    //check user is seller or admin
+    if (isSeller(req)) {
+      //here user is seller
+      deletedProduct = await Product.findOneAndDelete({
+        _id: id,
+        seller: req.user._id,
       });
+
+      // check product found or not. if not then return
+      if (!deletedProduct) {
+        return sendResponse(res, 403, {
+          name: "Forbidden",
+          success: false,
+          message: "Oh shit! This is not your product.",
+        });
+      }
+    } else {
+      // here user is admin
+      deletedProduct = await Product.findOneAndDelete({
+        _id: id,
+      });
+
+      // check product found or not. if not then return
+      if (!deletedProduct) {
+        return sendResponse(res, 403, {
+          name: "Forbidden",
+          success: false,
+          message: "Product not fount by id: " + id,
+        });
+      }
     }
+
     return sendResponse(res, 200, {
       name: "OK",
       success: true,
