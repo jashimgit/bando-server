@@ -124,7 +124,7 @@ export const getFeatureProductForUser = async (req, res) => {
 // get single product for user
 export const getSingleProductForUser = async (req, res) => {
   try {
-    const product = await Product.findOne({ status: "active" })
+    const product = await Product.findOne({ _id:req.params.id, status: "active" })
       .select(" -__v")
       .populate("seller", "name photoUrl -_id");
     if (!product) {
