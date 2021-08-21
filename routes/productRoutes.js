@@ -8,6 +8,7 @@ import {
   getAllProductForUser,
   getFeatureProductForUser,
   getSellerProductsForSellerAndAdmin,
+  getSingleProductForUser,
 } from "../controllers/productController";
 import { updateStatusValidation } from "../middlewares/validationHelpers/productStatusUpdateValidation";
 import { productValidation } from "../middlewares/validationHelpers/productValidation";
@@ -16,9 +17,14 @@ import verifyAuthToken from "../middlewares/verifyAuthToken";
 const router = express.Router();
 
 router.get("/all/admin", verifyAuthToken, getAllProductForAdmin);
-router.get("/all/seller/:id", verifyAuthToken, getSellerProductsForSellerAndAdmin);
+router.get(
+  "/all/seller/:id",
+  verifyAuthToken,
+  getSellerProductsForSellerAndAdmin
+);
 router.get("/all/user", getAllProductForUser);
 router.get("/feature/", getFeatureProductForUser);
+router.get("/single-product/:id", getSingleProductForUser);
 
 // only seller can add, update, product
 router.post("/add", verifyAuthToken, productValidation, postSingleProduct);

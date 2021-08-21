@@ -50,7 +50,10 @@ export const getSellerProductsForSellerAndAdmin = async (req, res) => {
   // check auth seller and requested seller is same. if not return with error
   if (isSeller(req)) {
     if (user._id !== params.id) {
-      return sendResponse(res, 403, {success:false, message:"Shit man! You are trying to see others seller products!"})
+      return sendResponse(res, 403, {
+        success: false,
+        message: "Shit man! You are trying to see others seller products!",
+      });
     }
   }
 
@@ -109,6 +112,28 @@ export const getFeatureProductForUser = async (req, res) => {
       });
     }
     return sendResponse(res, 200, { success: true, products });
+  } catch (err) {
+    return sendResponse(res, 500, {
+      name: "Internal Server error",
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+// get single product for user
+export const getSingleProductForUser = async (req, res) => {
+  try {
+    const product = await Product.findOne({ status: "active" })
+      .select(" -__v")
+      .populate("seller", "name photoUrl -_id");
+    if (!product) {
+      return sendResponse(res, 404, {
+        name: "Not Fount",
+        message: "there is not product in this collection",
+      });
+    }
+    return sendResponse(res, 200, { success: true, product });
   } catch (err) {
     return sendResponse(res, 500, {
       name: "Internal Server error",
