@@ -1,4 +1,4 @@
-import { isSeller, sendResponse, isAdmin } from "../helpersFunctions";
+import { isAdmin, isSeller, sendResponse } from "../helpersFunctions";
 import models from "../models";
 
 const { Product } = models;
@@ -124,7 +124,10 @@ export const getFeatureProductForUser = async (req, res) => {
 // get single product for user
 export const getSingleProductForUser = async (req, res) => {
   try {
-    const product = await Product.findOne({ _id:req.params.id, status: "active" })
+    const product = await Product.findOne({
+      _id: req.params.id,
+      status: "active",
+    })
       .select(" -__v")
       .populate("seller", "name photoUrl -_id");
     if (!product) {
@@ -312,5 +315,41 @@ export const updateProductStatus = async (req, res) => {
       success: false,
       message: err.message,
     });
+  }
+};
+
+/**
+ *  coded by: Jashim
+ *  get Similar products
+ *  requirements:
+ *  product Id , subCategory
+ *  then get data
+ *  /product/similarProduct
+ */
+
+export const getSimilarProducts = async (req, res) => {
+  const { subcategory } = req.body;
+  //  console.log(subcategory)
+  try {
+    const similarProducts = await Product.find({ subCategory: subcategory }).limit(12);
+    if(similarProducts == '' || null)  {
+      res.status(500).json({
+        name: 'response',
+        success: false,
+        message: 'Sorry! no product found',
+      })
+    } else {
+      res.status(200).json({
+        totalProducts: similarProducts.length,
+        data: similarProducts,
+        message: "Success",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      name: "Internal Server error",
+      success: false,
+      message: error.message,
+    })
   }
 };
