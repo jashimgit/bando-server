@@ -16,7 +16,7 @@ export const getAllProductForAdmin = async (req, res) => {
   try {
     const products = await Product.find()
       .select(" -__v")
-      .populate("seller", "name email photoUrl createdAt phone -_id");
+      .populate("seller", "name email photoUrl createdAt phone ");
     if (!products.length) {
       return sendResponse(res, 404, {
         name: "Not Fount",
@@ -60,7 +60,7 @@ export const getSellerProductsForSellerAndAdmin = async (req, res) => {
   try {
     const products = await Product.find({ seller: params.id })
       .select(" -__v")
-      .populate("seller", "name email photoUrl createdAt phone -_id");
+      .populate("seller", "name email photoUrl createdAt phone ");
     if (!products.length) {
       return sendResponse(res, 404, {
         name: "Not Fount",
@@ -82,7 +82,7 @@ export const getAllProductForUser = async (req, res) => {
   try {
     const products = await Product.find({ status: "active" })
       .select(" -__v")
-      .populate("seller", "name email photoUrl createdAt phone -_id");
+      .populate("seller", "name email photoUrl createdAt phone ");
     if (!products.length) {
       return sendResponse(res, 404, {
         name: "Not Fount",
@@ -104,7 +104,7 @@ export const getFeatureProductForUser = async (req, res) => {
   try {
     const products = await Product.find({ status: "active", isFeature: true })
       .select(" -__v")
-      .populate("seller", "name email photoUrl createdAt phone -_id");
+      .populate("seller", "name email photoUrl createdAt phone  ");
     if (!products.length) {
       return sendResponse(res, 404, {
         name: "Not Fount",
@@ -129,7 +129,7 @@ export const getSingleProductForUser = async (req, res) => {
       status: "active",
     })
       .select(" -__v")
-      .populate("seller", "name photoUrl -_id");
+      .populate("seller", "name photoUrl ");
     if (!product) {
       return sendResponse(res, 404, {
         name: "Not Fount",
@@ -331,13 +331,15 @@ export const getSimilarProducts = async (req, res) => {
   const { subcategory } = req.body;
   //  console.log(subcategory)
   try {
-    const similarProducts = await Product.find({ subCategory: subcategory }).limit(12);
-    if(similarProducts == '' || null)  {
+    const similarProducts = await Product.find({
+      subCategory: subcategory,
+    }).limit(12);
+    if (similarProducts == "" || null) {
       res.status(500).json({
-        name: 'response',
+        name: "response",
         success: false,
-        message: 'Sorry! no product found',
-      })
+        message: "Sorry! no product found",
+      });
     } else {
       res.status(200).json({
         totalProducts: similarProducts.length,
@@ -350,6 +352,6 @@ export const getSimilarProducts = async (req, res) => {
       name: "Internal Server error",
       success: false,
       message: error.message,
-    })
+    });
   }
 };
