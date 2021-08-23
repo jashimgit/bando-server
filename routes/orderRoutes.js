@@ -1,5 +1,9 @@
 import express from "express";
-import { handleOrderSubmit } from "../controllers/orderController";
+import {
+  handleOrderSubmit,
+  getAllOrdersForAdmin,
+  getAllOrdersById
+} from "../controllers/orderController";
 import { orderSchemaValidation } from "../middlewares/validationHelpers/orderSchemaValidition";
 import verifyAuthToken from "../middlewares/verifyAuthToken";
 
@@ -11,5 +15,8 @@ router.post(
   orderSchemaValidation,
   handleOrderSubmit
 );
+
+router.get("/admin/all", verifyAuthToken, getAllOrdersForAdmin);
+router.get("/all/:id", verifyAuthToken, getAllOrdersById);
 
 export default router;
