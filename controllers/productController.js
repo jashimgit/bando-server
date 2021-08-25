@@ -358,7 +358,7 @@ export const getSimilarProducts = async (req, res) => {
 
 // get product by category
 export const getProductsByCategory = async (req, res) => {
-  const categoryName = req.params.category;
+  const categoryName = req.params.category.toLowerCase();
   // let category = "category[0]";
 
   try {
