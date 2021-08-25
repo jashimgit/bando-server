@@ -1,8 +1,10 @@
+import { isAdmin, sendResponse } from "../helpersFunctions";
 import models from "../models";
 
+const { Category } = models;
 export const getAllCategory = async (req, res) => {
   try {
-    const categories = await models.Category.find({});
+    const categories = await Category.find({});
     if (categories.length <= 0) {
       res.status(404).json({
         name: "NotFound",
@@ -43,7 +45,11 @@ export const getSingleCategoryById = async (req, res) => {
 };
 
 export const postCategory = async (req, res) => {
-  const newCategory = new models.Category(req.body);
+  if (!isAdmin(req)) {
+    return sendResponse(res, 403, { success: false, message: "forbidden" });
+  }
+
+  const newCategory = new Category({...req.body,});
   await newCategory.save((err) => {
     if (err) {
       res.status(500).json({ error: "server side error" });

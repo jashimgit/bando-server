@@ -355,3 +355,30 @@ export const getSimilarProducts = async (req, res) => {
     });
   }
 };
+
+// get product by category
+export const getProductsByCategory = async (req, res) => {
+  const categoryName = req.params.category;
+  // let category = "category[0]";
+
+  try {
+    const products = await Product.find({ category: [categoryName] }).populate(
+      "seller",
+      " -password -__v"
+    );
+    if (!products.length) {
+      return sendResponse(res, 404, {
+        success: false,
+        message: "product not found by category:" + category,
+      });
+    } else {
+      return sendResponse(res, 200, {
+        success: true,
+        message: "product found",
+        products,
+      });
+    }
+  } catch (err) {
+    return sendResponse(res, 500, { success: false, message: err.message });
+  }
+};

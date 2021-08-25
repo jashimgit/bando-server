@@ -5,7 +5,7 @@ import {
   postCategory,
   updateCategoryById,
 } from "../controllers/categoryController";
-
+import verifyAuthToken from "../middlewares/verifyAuthToken";
 
 const router = express.Router();
 
@@ -17,7 +17,7 @@ router.get("/", getAllCategory);
 router.get("/:id", getSingleCategoryById);
 
 // Add new category
-router.post("/", postCategory);
+router.post("/", verifyAuthToken, postCategory);
 
 // update category
 

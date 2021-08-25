@@ -10,6 +10,7 @@ import {
   getSellerProductsForSellerAndAdmin,
   getSingleProductForUser,
   getSimilarProducts,
+  getProductsByCategory
 } from "../controllers/productController";
 import { updateStatusValidation } from "../middlewares/validationHelpers/productStatusUpdateValidation";
 import { productValidation } from "../middlewares/validationHelpers/productValidation";
@@ -47,6 +48,8 @@ router.put(
   updateProductStatus
 );
 
-router.get('/similarProduct', getSimilarProducts)
+router.get("/similarProduct", getSimilarProducts);
+
+router.get("/:category", getProductsByCategory);
 
 export default router;
