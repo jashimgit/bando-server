@@ -362,10 +362,10 @@ export const getProductsByCategory = async (req, res) => {
   // let category = "category[0]";
 
   try {
-    const products = await Product.find({ category: [categoryName] }).populate(
-      "seller",
-      " -password -__v"
-    );
+    const products = await Product.find({
+      status: "active",
+      category: { $all: [categoryName] },
+    }).populate("seller", " -password -__v");
     if (!products.length) {
       return sendResponse(res, 404, {
         success: false,
