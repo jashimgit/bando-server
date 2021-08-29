@@ -5,9 +5,16 @@ const { Order } = models;
 
 // submit single order
 export const handleOrderSubmit = async (req, res) => {
-  const newOrder = new Order({ ...req.body, user: req.user._id });
+  const newOrder = new Order({ ...req.body });
   try {
-    const savedOrder = await newOrder.save();
+    let savedOrder = await newOrder
+      .save()
+      .then((newOrder) =>
+        newOrder
+          .populate("user", "-password -__v ")
+          .populate("products.seller", "-password -__v ")
+          .execPopulate()
+      );
     return sendResponse(res, 200, {
       success: true,
       message: "order add successfully1",
@@ -24,7 +31,9 @@ export const getAllOrdersForAdmin = async (req, res) => {
     return sendResponse(res, 403, { success: false, message: "Unauthorized" });
   }
   try {
-    const orders = await Order.find().populate("user", "-password -role -__v");
+    const orders = await Order.find()
+      .populate("user", "-password -__v ")
+      .populate("products.seller", "-password -__v ");
     if (!orders) {
       return sendResponse(res, 404, {
         success: false,
@@ -47,10 +56,9 @@ export const getAllOrdersById = async (req, res) => {
     return sendResponse(res, 403, { success: false, message: "Unauthorized" });
   }
   try {
-    const orders = await Order.find({ user: req.params.id }).populate(
-      "user",
-      "-password -role -__v"
-    );
+    const orders = await Order.find({ user: req.params.id })
+      .populate("user", "-password -__v ")
+      .populate("products.seller", "-password -__v ");
     if (!orders) {
       return sendResponse(res, 404, {
         success: false,

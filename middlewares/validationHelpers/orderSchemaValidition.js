@@ -1,27 +1,29 @@
 import Joi from "joi";
+Joi.objectId = require("joi-objectid")(Joi);
 
 export const orderSchemaValidation = (req, res, next) => {
   const schema = Joi.object({
-    order: Joi.object({
-      products: Joi.array()
-        .items(
-          Joi.object({
-            sellerId: Joi.string().required(),
-            product: Joi.object().required(),
-          })
-        )
-        .has(
-          Joi.object({
-            sellerId: Joi.string().required(),
-            product: Joi.object().required(),
-          })
-        )
-        .required(),
-      total: Joi.number().required(),
-      subTotal: Joi.number().required(),
-      shippingCharge: Joi.number().required(),
-      courierInfo: Joi.object().required(),
-    }).required(),
+    products: Joi.array()
+      .items(
+        Joi.object({
+          seller: Joi.objectId().required(),
+          product: Joi.object().required(),
+        })
+      )
+      .has(
+        Joi.object({
+          seller: Joi.objectId().required(),
+          product: Joi.object().required(),
+        })
+      )
+      .required(),
+    total: Joi.number().required(),
+    subTotal: Joi.number().required(),
+    courierInfo: Joi.object().required(),
+    orderItem: Joi.number().required(),
+    user: Joi.objectId().required(),
+    orderId: Joi.string().required(),
+    status: Joi.string().allow("pending", "approved"),
   });
   const { error } = schema.validate(req.body);
 
