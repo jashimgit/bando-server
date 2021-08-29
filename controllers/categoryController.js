@@ -2,28 +2,18 @@ import { isAdmin, sendResponse } from "../helpersFunctions";
 import models from "../models";
 
 const { Category } = models;
-const { SubCategory } = models;
+const { Subcategory } = models;
+
 export const getAllCategory = async (req, res) => {
   try {
-    const categories = await Category.find({}).populate('SubCategory');
-    if (categories.length <= 0) {
-      res.status(404).json({
-        name: "NotFound",
-        categories,
-        message: "Total document: " + categories.length,
-      });
-    } else {
-      res.status(200).json({
-        name: "All Categories",
-        categories,
-        message: "Total document: " + categories.length,
-      });
-    }
+    const categories = await Category.find({}).populate('subcategory', 'category name shortDesc -_id');
+    res.status(200).json({
+      message: 'success',
+      categories,
+    })
   } catch (err) {
     res.status(404).json({
-      name: "NotFound",
-      categories,
-      message: "Total document: " + categories.length,
+      error: "No category found",
     });
   }
 };

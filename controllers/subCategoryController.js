@@ -7,12 +7,12 @@
 import models from "../models";
 // import Category from '../models/categoryModel';
 
-const { SubCategory } = models;
+const { Subcategory } = models;
 const { Category } = models;
 
 export const getAllSubCategory = async (req, res) => {
-  await SubCategory.find({})
-    .populate('category')
+  await Subcategory.find({})
+    .populate('category', 'name shortDesc category -_id')
     .exec((err, doc) => {
       if(err){
         res.status(500).json({
@@ -32,11 +32,9 @@ export const addSubCategory = async (req, res) => {
   const { category } = req.body;
   try {
 
-    const newSubcategory = new SubCategory(req.body);
-    const subCategory = await newSubcategory.save();
-    // update category document
-    const { id } = subCategory._id;
-  await Category.updateOne({_id: category}, {$push: { subCategory: id}})
+    const newSubcategory = new Subcategory(req.body);
+    const subcategory = await newSubcategory.save();
+    await Category.updateOne({_id: category}, {$push: { subcategory: subcategory._id}})
 
   res.status(200).json({message: 'sub category added successfully'})
   // await User.updateOne({ _id: req.userId }, { $push: { todos: todo._id } });
