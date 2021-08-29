@@ -31,6 +31,9 @@ app.use("/admin", routes.adminRoutes);
 // category route config
 app.use("/category", routes.categoryRoutes);
 
+// sub category  route config
+app.use('/subcategory', routes.SubCategoryRoutes)
+
 // product route config
 app.use("/product", routes.productRoutes);
 
