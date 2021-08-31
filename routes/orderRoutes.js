@@ -2,7 +2,8 @@ import express from "express";
 import {
   handleOrderSubmit,
   getAllOrdersForAdmin,
-  getAllOrdersById
+  getAllOrdersByIdForUser,
+  getAllOrdersByProductId,
 } from "../controllers/orderController";
 import { orderSchemaValidation } from "../middlewares/validationHelpers/orderSchemaValidition";
 import verifyAuthToken from "../middlewares/verifyAuthToken";
@@ -17,6 +18,7 @@ router.post(
 );
 
 router.get("/admin/all", verifyAuthToken, getAllOrdersForAdmin);
-router.get("/all/:id", verifyAuthToken, getAllOrdersById);
+router.get("/user/:userId", verifyAuthToken, getAllOrdersByIdForUser);
+router.get("/product/:productId", verifyAuthToken, getAllOrdersByProductId);
 
 export default router;
