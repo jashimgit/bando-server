@@ -9,7 +9,16 @@ const { SubCategory } = models;
 const { Category } = models;
 
 export const getAllSubCategory = async () => {
-  const subCategory = await SubCategory.find({});
+  try {
+    const subCategory = await SubCategory.find({});
+    res.status(200).json({
+      subcategory,
+    })
+  } catch(err) {
+    res.status(500).json({
+      message: 'server side error'
+    })
+  }
 };
 
 export const addSubCategory = async (req, res) => {

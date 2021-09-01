@@ -358,7 +358,7 @@ export const getSimilarProducts = async (req, res) => {
 
 // get latest 3 products
 export const getLatestProductBylimit = async ( req, res ) => {
-  const latestProducts =  await Product.find({}).limit(3);
+  const latestProducts =  await Product.find({status: 'active'}).limit(3);
   try{
     if(!latestProducts.length) {
       return res.status(500).json({ message: 'Sorry no products found'})
