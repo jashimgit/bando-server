@@ -1,16 +1,8 @@
 import express from "express";
 import {
   deleteSingleProduct,
-  getAllProductForAdmin,
-  postSingleProduct,
-  updateSingleProduct,
-  updateProductStatus,
-  getAllProductForUser,
-  getFeatureProductForUser,
-  getSellerProductsForSellerAndAdmin,
-  getSingleProductForUser,
-  getSimilarProducts,
-  getProductsByCategory
+  getAllProductForAdmin, getAllProductForUser,
+  getFeatureProductForUser, getLatestProductBylimit, getProductsByCategory, getSellerProductsForSellerAndAdmin, getSimilarProducts, getSingleProductForUser, postSingleProduct, updateProductStatus, updateSingleProduct
 } from "../controllers/productController";
 import { updateStatusValidation } from "../middlewares/validationHelpers/productStatusUpdateValidation";
 import { productValidation } from "../middlewares/validationHelpers/productValidation";
@@ -50,6 +42,13 @@ router.put(
 
 router.get("/similarProduct", getSimilarProducts);
 
+//    /product/latest
+router.get('/latest', getLatestProductBylimit);
+
+
 router.get("/:category", getProductsByCategory);
+
+
+
 
 export default router;
