@@ -10,21 +10,17 @@ import models from "../models";
 const { Subcategory } = models;
 const { Category } = models;
 
-export const getAllSubCategory = async (req, res) => {
-  await Subcategory.find({})
-    .populate('category', 'name shortDesc category -_id')
-    .exec((err, doc) => {
-      if(err){
-        res.status(500).json({
-          error: err
-        })
-      } else {
-        res.status(200).json({
-          message: 'sub category',
-          result: doc
-        })
-      }
+export const getAllSubCategory = async () => {
+  try {
+    const subCategory = await SubCategory.find({});
+    res.status(200).json({
+      subcategory,
     })
+  } catch(err) {
+    res.status(500).json({
+      message: 'server side error'
+    })
+  }
 };
 
 export const addSubCategory = async (req, res) => {

@@ -11,6 +11,8 @@ const orderSchema = mongoose.Schema({
           ref: "Auth",
         },
         product: { type: {}, required: true },
+        status: { type: String, default: "pending" },
+        pickDate: { type: Date },
       },
     ],
     required: true,
