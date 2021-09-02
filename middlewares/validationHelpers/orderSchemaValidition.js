@@ -23,7 +23,13 @@ export const orderSchemaValidation = (req, res, next) => {
     orderItem: Joi.number().required(),
     user: Joi.objectId().required(),
     orderId: Joi.string().required(),
-    status: Joi.string().allow("pending", "approved"),
+    status: Joi.string().allow(
+      "pending",
+      "approved",
+      "packaging",
+      "shipping",
+      "delivered"
+    ),
     shippingMethod: Joi.string(),
   });
   const { error } = schema.validate(req.body);
@@ -37,13 +43,9 @@ export const orderSchemaValidation = (req, res, next) => {
 
 export const orderUpdateSchemaValidation = (req, res, next) => {
   const schema = Joi.object({
-    status: Joi.string().allow(
-      "pending",
-      "approved",
-      "packaging",
-      "shipping",
-      "done"
-    ),
+    status: Joi.string()
+      .required()
+      .allow("pending", "approved", "packaging", "shipping", "done"),
     pickDate: Joi.date().required(),
   });
   const { error } = schema.validate(req.body);

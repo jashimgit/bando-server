@@ -2,8 +2,10 @@ import Joi from "joi";
 
 export const updateStatusValidation = (req, res, next) => {
   const schema = Joi.object({
-    status: Joi.string().valid("pending", "active", "rejected").required(),
-    isFeature:Joi.boolean().required()
+    status: Joi.string()
+      .valid("pending", "approved", "packaging", "shipping", "delivered")
+      .required(),
+    isFeature: Joi.boolean().required(),
   });
   const { error } = schema.validate(req.body);
 
