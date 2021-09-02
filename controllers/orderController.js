@@ -71,7 +71,7 @@ export const getAllOrdersForAdmin = async (req, res) => {
     }
     return sendResponse(res, 200, {
       success: true,
-      message: "Total order" + orders.length,
+      message: "Total order : " + orders.length,
       orders,
     });
   } catch (err) {
