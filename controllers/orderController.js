@@ -5,12 +5,8 @@ const { Order } = models;
 
 // submit single order
 export const handleOrderSubmit = async (req, res) => {
-  const newOrder = new Order({ ...req.body, orderNum: 1 });
+  const newOrder = new Order({ ...req.body });
   try {
-    const lastOrder = await Order.findOne().sort("-date");
-    newOrder.orderNum =
-      (lastOrder.orderNum ? lastOrder.orderNum + 1 : 1) + orderNum;
-
     let savedOrder = await newOrder
       .save()
       .then((newOrder) =>
@@ -23,6 +19,35 @@ export const handleOrderSubmit = async (req, res) => {
       success: true,
       message: "order add successfully1",
       savedOrder,
+    });
+  } catch (err) {
+    sendResponse(res, 500, { success: false, message: err.message });
+  }
+};
+
+// submit single order
+export const handleOrderSTatusUpdate = async (req, res) => {
+  if (!isAdmin(req)) {
+    return sendResponse(res, 403, {
+      success: false,
+      message: "Not access",
+    });
+  }
+
+  try {
+    const result = await Order.updateOne(
+      { _id: req.params.orderId },
+      { status: req.body.status, pickDate: req.body.pickDate }
+    );
+    if (!result)
+      return sendResponse(res, 404, {
+        name: "Not found",
+        success: false,
+        message: "Order not found by id:" + req.params.orderId,
+      });
+    return sendResponse(res, 200, {
+      success: true,
+      message: "status update successfully",
     });
   } catch (err) {
     sendResponse(res, 500, { success: false, message: err.message });
@@ -80,7 +105,6 @@ export const getAllOrdersByIdForUser = async (req, res) => {
 };
 
 // get all order by product id
-
 export const getAllOrdersByProductId = async (req, res) => {
   if (!(isSeller(req) || isAdmin(req))) {
     return sendResponse(res, 403, { success: false, message: "Unauthorized" });
@@ -114,7 +138,6 @@ export const getAllOrdersByProductId = async (req, res) => {
 };
 
 // get all order for specific seller
-
 export const getAllOrdersFroSellerById = async (req, res) => {
   if (!(isSeller(req) || isAdmin(req))) {
     return sendResponse(res, 403, { success: false, message: "Unauthorized" });

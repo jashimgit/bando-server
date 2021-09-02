@@ -34,3 +34,23 @@ export const orderSchemaValidation = (req, res, next) => {
       .send({ name: "Bad Request", message: error.details[0].message });
   next();
 };
+
+export const orderUpdateSchemaValidation = (req, res, next) => {
+  const schema = Joi.object({
+    status: Joi.string().allow(
+      "pending",
+      "approved",
+      "packaging",
+      "shipping",
+      "done"
+    ),
+    pickDate: Joi.date().required(),
+  });
+  const { error } = schema.validate(req.body);
+
+  if (error)
+    return res
+      .status(400)
+      .send({ name: "Bad Request", message: error.details[0].message });
+  next();
+};
