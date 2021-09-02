@@ -382,3 +382,29 @@ export const getProductsByCategory = async (req, res) => {
     return sendResponse(res, 500, { success: false, message: err.message });
   }
 };
+
+// get product by category
+export const productBySearchName = async (req, res) => {
+  const searchName = req.params.searchValue.toLowerCase();
+  // let category = "category[0]";
+
+  try {
+    const products = await Product.find({
+      name: new RegExp("^" + searchName + "$", "i"),
+    }).populate("seller", " -password -__v");
+    if (!products.length) {
+      return sendResponse(res, 404, {
+        success: false,
+        message: "product not found by search value:" + searchName,
+      });
+    } else {
+      return sendResponse(res, 200, {
+        success: true,
+        message: "product found",
+        products,
+      });
+    }
+  } catch (err) {
+    return sendResponse(res, 500, { success: false, message: err.message });
+  }
+};

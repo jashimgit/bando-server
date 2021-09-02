@@ -24,6 +24,7 @@ export const orderSchemaValidation = (req, res, next) => {
     user: Joi.objectId().required(),
     orderId: Joi.string().required(),
     status: Joi.string().allow("pending", "approved"),
+    shippingMethod: Joi.string(),
   });
   const { error } = schema.validate(req.body);
 

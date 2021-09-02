@@ -81,6 +81,7 @@ export const getAllOrdersByProductId = async (req, res) => {
   if (!(isSeller(req) || isAdmin(req))) {
     return sendResponse(res, 403, { success: false, message: "Unauthorized" });
   }
+
   const { productId } = req.params;
   try {
     const orders = await Order.find({
@@ -103,6 +104,61 @@ export const getAllOrdersByProductId = async (req, res) => {
       message: "Total order" + orders.length,
       orders,
     });
+  } catch (err) {
+    sendResponse(res, 500, { success: false, message: err.message });
+  }
+};
+
+// get all order for specific seller
+
+export const getAllOrdersFroSellerById = async (req, res) => {
+  if (!(isSeller(req) || isAdmin(req))) {
+    return sendResponse(res, 403, { success: false, message: "Unauthorized" });
+  }
+
+  if (isSeller(req)) {
+    if (req.user._id !== req.params.sellerId) {
+      return sendResponse(res, 403, {
+        success: false,
+        message: "You ar not validate seller",
+      });
+    }
+  }
+
+  const { sellerId } = req.params;
+
+  try {
+    await Order.find({ "products.seller": sellerId })
+      .populate("user", "-password -__v ")
+      .exec(function (err, orders) {
+        // console.log(orders);
+        if (err) {
+          return sendResponse(res, 404, {
+            success: false,
+            message: err.message,
+          });
+        }
+
+        orders = orders.filter(function (order) {
+          order.products = order.products.filter(function (product) {
+            return product.seller == sellerId;
+          });
+          // console.log(order.products)
+          return order.products.length > 0;
+        });
+
+        if (!orders.length) {
+          return sendResponse(res, 404, {
+            success: false,
+            message: "order not found ",
+          });
+        }
+        return sendResponse(res, 200, {
+          success: true,
+          message: "Total order " + orders.length,
+          orders,
+        });
+      });
   } catch (err) {
     sendResponse(res, 500, { success: false, message: err.message });
   }
