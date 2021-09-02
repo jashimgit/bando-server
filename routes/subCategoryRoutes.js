@@ -21,7 +21,7 @@ router.get('/', getAllSubCategory);
  * @example  /subcategory
  * @method POST
  */
-router.post('/add', addSubCategory)
+router.post('/', addSubCategory)
 
 
 export default router;

@@ -5,8 +5,12 @@ const { Order } = models;
 
 // submit single order
 export const handleOrderSubmit = async (req, res) => {
-  const newOrder = new Order({ ...req.body });
+  const newOrder = new Order({ ...req.body, orderNum: 1 });
   try {
+    const lastOrder = await Order.findOne().sort("-date");
+    newOrder.orderNum =
+      (lastOrder.orderNum ? lastOrder.orderNum + 1 : 1) + orderNum;
+
     let savedOrder = await newOrder
       .save()
       .then((newOrder) =>

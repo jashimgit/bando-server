@@ -2,8 +2,8 @@ import Auth from "./authModel";
 import Category from "./categoryModel";
 import Order from "./orderModel";
 import Product from "./productModel";
-import SubCategory from './subCategoryModel';
+import Subcategory from './subCategoryModel';
 
-const models = { Category, Product, Auth, Order, SubCategory };
+const models = { Category, Product, Auth, Order, Subcategory };
 
 export default models;

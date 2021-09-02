@@ -356,6 +356,25 @@ export const getSimilarProducts = async (req, res) => {
   }
 };
 
+// get latest 3 products
+export const getLatestProductBylimit = async ( req, res ) => {
+  const latestProducts =  await Product.find({status: 'active'}).limit(3);
+  try{
+    if(!latestProducts.length) {
+      return res.status(500).json({ message: 'Sorry no products found'})
+    }
+    res.status(200).json({
+      latestProducts
+    })
+  } catch (err){
+    res.status(500).json({message: 'server side error'})
+  }
+
+}
+
+
+
+
 // get product by category
 export const getProductsByCategory = async (req, res) => {
   const categoryName = req.params.category.toLowerCase();

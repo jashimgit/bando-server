@@ -9,7 +9,12 @@ const categorySchema = new mongoose.Schema({
       ref: "Product",
     },
   ],
-  subCategory: [{ type: mongoose.Schema.Types.ObjectId, ref: "SubCategory" }],
+  subcategory: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Subcategory"
+    }
+  ],
 });
 
 export default categorySchema;

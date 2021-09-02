@@ -25,7 +25,8 @@ const orderSchema = mongoose.Schema({
   complete: { type: Boolean, default: false },
   orderId: { type: String, required: true },
   status: { type: String, default: "pending" },
-  shippingMethod:{type:String, default:""}
+  shippingMethod: { type: String, default: "" },
+  orderNum: { type: Number, default: 1 },
 });
 
 export default orderSchema;
