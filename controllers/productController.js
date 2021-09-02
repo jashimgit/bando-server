@@ -411,7 +411,7 @@ export const productBySearchName = async (req, res) => {
         { name: new RegExp(searchName, "i") },
         { category: new RegExp(searchName, "i") },
         { model: new RegExp(searchName, "i") },
-        { description: new RegExp(searchName, "i") },
+        // { description: new RegExp(searchName, "i") },
         { brand: new RegExp(searchName, "i") },
         { subCategory: new RegExp(searchName, "i") },
       ],
