@@ -357,23 +357,19 @@ export const getSimilarProducts = async (req, res) => {
 };
 
 // get latest 3 products
-export const getLatestProductBylimit = async ( req, res ) => {
-  const latestProducts =  await Product.find({status: 'active'}).limit(3);
-  try{
-    if(!latestProducts.length) {
-      return res.status(500).json({ message: 'Sorry no products found'})
+export const getLatestProductBylimit = async (req, res) => {
+  const latestProducts = await Product.find({ status: "active" }).limit(3);
+  try {
+    if (!latestProducts.length) {
+      return res.status(500).json({ message: "Sorry no products found" });
     }
     res.status(200).json({
-      latestProducts
-    })
-  } catch (err){
-    res.status(500).json({message: 'server side error'})
+      latestProducts,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "server side error" });
   }
-
-}
-
-
-
+};
 
 // get product by category
 export const getProductsByCategory = async (req, res) => {
@@ -404,13 +400,23 @@ export const getProductsByCategory = async (req, res) => {
 
 // get product by category
 export const productBySearchName = async (req, res) => {
-  const searchName = req.params.searchValue.toLowerCase();
-  // let category = "category[0]";
+  const searchName = req.params.searchValue
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
 
   try {
     const products = await Product.find({
-      name: new RegExp("^" + searchName + "$", "i"),
+      $or: [
+        { name: new RegExp(searchName, "i") },
+        { category: new RegExp(searchName, "i") },
+        { model: new RegExp(searchName, "i") },
+        { description: new RegExp(searchName, "i") },
+        { brand: new RegExp(searchName, "i") },
+        { subCategory: new RegExp(searchName, "i") },
+      ],
     }).populate("seller", " -password -__v");
+
     if (!products.length) {
       return sendResponse(res, 404, {
         success: false,

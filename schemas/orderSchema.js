@@ -24,7 +24,11 @@ const orderSchema = mongoose.Schema({
   date: { type: Date, default: new Date() },
   complete: { type: Boolean, default: false },
   orderId: { type: String, required: true },
-  status: { type: String, default: "pending" },
+  status: {
+    type: String,
+    default: "pending",
+    enum: ["pending", "approved", "packaging", "shipping", "delivered"],
+  },
   shippingMethod: { type: String, default: "" },
   pickDate: { type: Date, default: null },
 });
