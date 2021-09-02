@@ -10,15 +10,15 @@ import models from "../models";
 const { Subcategory } = models;
 const { Category } = models;
 
-export const getAllSubCategory = async () => {
+export const getAllSubCategory = async (req, res) => {
   try {
-    const subCategory = await SubCategory.find({});
+    const subcategory = await Subcategory.find({}).populate('category')
     res.status(200).json({
       subcategory,
     })
   } catch(err) {
     res.status(500).json({
-      message: 'server side error'
+      message: err.message
     })
   }
 };
