@@ -32,7 +32,7 @@ app.use("/admin", routes.adminRoutes);
 app.use("/category", routes.categoryRoutes);
 
 // sub category  route config
-app.use('/subcategory', routes.SubCategoryRoutes)
+app.use("/subcategory", routes.SubCategoryRoutes);
 
 // product route config
 app.use("/product", routes.productRoutes);
@@ -49,5 +49,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port} `);
 });
