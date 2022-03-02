@@ -1,10 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sendResponse } from "../helpersFunctions";
-// import models from "../models";
-import models from "../models";
-
-const { Auth } = models;
+import Auth from "../models/authModel";
 
 // user signup handle
 export const handleAuthSignup = async (req, res) => {
@@ -48,14 +45,15 @@ export const handleAuthLogin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await Auth.find({ email }).select("-__v");
-    console.log(user);
+    // const user = await Auth.findOne({ email }).select("-__v");
+    const user = await Auth.findOne({ email });
+
     if (!user) {
       return res
         .status(404)
         .send({ name: "Not Found", message: "User Not found", success: false });
     }
-
+    // console.log(user);
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return sendResponse(res, 403, {
@@ -80,6 +78,7 @@ export const handleAuthLogin = async (req, res) => {
       createdAt,
       status,
     } = user;
+
     const newUser = {
       name,
       photoUrl,
@@ -90,7 +89,7 @@ export const handleAuthLogin = async (req, res) => {
       createdAt,
       status,
     };
-    // res.append("token", token);
+
     res.status(200).json({
       message: "login success",
       name: "OK",

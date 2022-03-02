@@ -2,13 +2,13 @@ import Joi from "joi";
 
 const schema = Joi.object({
   name: Joi.string().required(),
-  category: Joi.array().items(Joi.string().lowercase()).required(),
+  category: Joi.string(),
   subCategory: Joi.string().required(),
   brand: Joi.string().required(),
   model: Joi.string().empty(""),
-  images: Joi.array().items(Joi.string()).required(),
+  images: Joi.string(),
   price: Joi.number().required(),
-  color: Joi.string().required(),
+  color: Joi.string().empty(""),
   size: Joi.string().empty(""),
   height: Joi.string().empty(""),
   width: Joi.string().empty(""),
